@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  # Define a mosquitto service
+  mosquitto:
+    image: rtsoft7/iot-mosquitto:latest
+    # volumes:
+    #  - ./etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    # links:
+    #  - influxdb
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  # Define a node-red service
+  node-red:
+    image: rtsoft7/iot-node-red:latest
+    volumes:
+      - ./node-red/shared:/host
+    links:
+      - mosquitto
+    ports:
+      - "1880:1880"
+      - "10100:10100"
+
